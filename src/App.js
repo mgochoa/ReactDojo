@@ -1,4 +1,6 @@
 import React, {Component} from 'react';
+import ResultComponent from './ResultComponent';
+
 //import logo from './logo.svg';
 import './App.css';
 import axios from 'axios';
@@ -8,24 +10,25 @@ class App extends Component {
     constructor(props) {
         super(props);
         this.loadUsers();
-        this.state = {users: []};
+        this.state = {results: []};
     }
 
 
     render() {
         console.log(this.state);
-        return (<ul>{this.state.users.map(function (user, j) {
-            return (<li key={user.id}>{user.name}</li>);
+        return (
+          <div className="container">{this.state.results.map(function (result, j) {
+            return (<ResultComponent id={result.id} title={result.title} image={result.thumbnail}></ResultComponent>);
         })}
-        </ul>);
+        </div>);
     }
 
     loadUsers() {
         let _this = this;
-        axios.get('http://jsonplaceholder.typicode.com/users').then(function (response) {
+        axios.get('https://api.mercadolibre.com/sites/MCO/search?q=audifonos').then(function (response) {
             console.log(response);
             _this.setState({
-                users: response.data
+                results: response.data.results
             });
         }).catch(function (error) {
             console.error(error);
